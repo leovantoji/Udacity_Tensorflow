@@ -1,4 +1,4 @@
-**Machine Learning with Tensorflow**
+# Machine Learning with Tensorflow
 
 ## Model converting Celcius to Fahrenheit:
 - ML Terms:
