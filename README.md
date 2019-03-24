@@ -17,7 +17,7 @@
   - **Forward pass**: The computation of output values from input
   - **Backward pass (backpropagation)**: The calculation of internal variable adjustments according to the optimizer algorithm, starting from the output layer and working back through each layer to the input.
 - Train a model to convert Celcius to Fahrenheit
-```python
+  ```python
   # tf.__version__ = 1.13.1
   import tensorflow as tf
   l0 = tf.keras.layers.Dense(units=1, input_shape=[1]) 
@@ -25,4 +25,10 @@
   model.compile(loss='mean_squared_error', optimizer=tf.keras.optimizers.Adam(0.1))
   history = model.fit(celsius_q, fahrenheit_a, epochs=500, verbose=False)
   model.predict([100.0])
+  ```
+  
+  ```python
+  hidden = tf.keras.layers.Dense(units=2, input_shape=[3])
+  output = tf.keras.layers.Dense(units=1)
+  model = tf.keras.Sequential([hidden, output])
   ```
