@@ -1,6 +1,6 @@
 # Machine Learning with Tensorflow
 
-## Model converting Celcius to Fahrenheit:
+## Regression Model (Celcius to Fahrenheit Conversion)
 - ML Terms:
   - **Feature**: The input(s) to our model
   - **Examples**: An input/output pair used for training
@@ -35,12 +35,21 @@
   model = tf.keras.Sequential([hidden, output])
   ```
 
-## Fashion MNIST Model
+## Classification Model (Fashion MNIST)
 - ML Terms:
   - **Flattening** is the process of converting a 2D image into 1D vector.
   - **ReLU (Rectified Linear Unit)**: An activation function that allows a model to solve non-linear problem.
   - **Softmax**: A function that provides probabilities for each possible output class.
+  - **Regression**: A model that outputs a single value. For example, an estimate of a house’s value.
   - **Classification**: A machine learning model used for distinguishing among two or more output categories.
+- Regression vs. Classification:
+  
+  ||Classification|Regression|
+  |:-:|:-:|:-:|
+  |Output|List of numbers that represent probabilities for each class|Single Number|
+  |Example|Fashion MNIST|Celcius to Fahrenheit|
+  |Loss|Sparse Categorical Cross Entropy|Mean Squared Error|
+  |Last Layer Activation Function|Softmax|None|
 - Model Training:  
   ```python
   # Flattening
