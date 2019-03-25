@@ -1,6 +1,6 @@
 # Machine Learning with Tensorflow
 
-## Regression Model (Celcius to Fahrenheit Conversion)
+## Regression Dense Neural Network Model (Celcius to Fahrenheit Conversion)
 - ML Terms:
   - **Feature**: The input(s) to our model
   - **Examples**: An input/output pair used for training
@@ -35,7 +35,7 @@
   model = tf.keras.Sequential([hidden, output])
   ```
 
-## Classification Model (Fashion MNIST)
+## Classification Dense Neural Network Model (Fashion MNIST)
 - ML Terms:
   - **Flattening** is the process of converting a 2D image into 1D vector.
   - **ReLU (Rectified Linear Unit)**: An activation function that allows a model to solve non-linear problem.
@@ -52,10 +52,38 @@
   |Last Layer Activation Function|Softmax|None|
 - Model Training:  
   ```python
-  # Flattening
-  input = tf.keras.layers.Flatten(input_shape=(28, 28, 1)) # input image 28 x 28 = 784 pixels
-  # ReLU
-  hidden = tf.keras.layers.Dense(units=128, activation=tf.nn.relu)
-  # Softmax
-  output = tf.keras.layers.Dense(units=10, activation=tf.nn.softmax)
+  model = tf.keras.Sequential([
+    tf.keras.layers.Flatten(input_shape=(28, 28, 1)), # Flattening: input image 28x28=784 pixels
+    tf.keras.layers.Dense(units=128, activation=tf.nn.relu), # ReLU
+    tf.keras.layers.Dense(units=10, activation=tf.nn.softmax) # Softmax
+    ])
+  
+  model.compile(optimizer='adam',
+    loss='sparce_categorical_crossentropy',
+    metrics=['accuracy'])
+  
+  # Normalize the dataset
+  def normalize(images, labels):
+    images = tf.cast(images, tf.float32)
+    images /= 255
+    return images, labels
+
+  # The map function applies the normalize function to each element in the train and test datasets
+  train_dataset =  train_dataset.map(normalize)
+  test_dataset  =  test_dataset.map(normalize)
+  
+  NUM_EXAMPLES = 60000
+  BATCH_SIZE = 32
+  train_dataset = train_dataset.repeat().shuffle(NUM_EXAMPLES).batch(BATCH_SIZE)
+  test_dataset = test_dataset.batch(BATCH_SIZE)
+  
+  model.fit(train_dataset, epochs=5, steps_per_epoch=math.ceil(num_train_examples/BATCH_SIZE))
+  
+  test_loss, test_accuracy = model.evaluate(test_dataset, steps=math.ceil(num_train_examples/BATCH_SIZE))
   ```
+
+## Convolution Neural Network (Fashion MNIST)
+- Main concepts:
+  - Convolution.
+  - Max Pooling.
+- **Convolution**: 
