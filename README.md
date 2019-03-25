@@ -83,7 +83,47 @@
   ```
 
 ## Convolution Neural Network (Fashion MNIST)
-- Main concepts:
-  - Convolution.
-  - Max Pooling.
-- **Convolution**: 
+- ML Terms:
+  - **CNNs**: Convolutional neural network. That is, a network which has at least one convolutional layer. A typical CNN also includes other types of layers, such as pooling layers and dense layers.
+  - **Convolution**: The process of applying a kernel (filter) to an image.
+  - **Kernel / filter**: A matrix which is smaller than the input, used to transform the input into chunks.
+  - **Padding**: Adding pixels of some value, usually 0, around the input image.
+  - **Pooling**: The process of reducing the size of an image through downsampling.There are several types of pooling layers. For example, average pooling converts many values into a single value by taking the average. However, maxpooling is the most common.
+  - **Maxpooling**: A pooling process in which many values are converted into a single value by taking the maximum value from among them.
+  - **Stride**: the number of pixels to slide the kernel (filter) across the image.
+  - **Downsampling**: The act of reducing the size of an image.
+- Model Training:
+  ```python
+  model = tf.keras.Sequential([
+    tf.keras.layers.Conv2D(32, (3,3), padding='same', activation=tf.nn.relu, input_shape=(28, 28, 1)),
+    tf.keras.layers.MaxPooling2D((2, 2), strides=2),
+    tf.keras.layers.Conv2D(64, (3,3), padding='same', activation=tf.nn.relu),
+    tf.keras.layers.MaxPooling2D((2, 2), strides=2),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(128, activation=tf.nn.relu),
+    tf.keras.layers.Dense(10,  activation=tf.nn.softmax)
+  ])
+  
+  model.compile(optimizer='adam',
+    loss='sparce_categorical_crossentropy',
+    metrics=['accuracy'])
+  
+  # Normalize the dataset
+  def normalize(images, labels):
+    images = tf.cast(images, tf.float32)
+    images /= 255
+    return images, labels
+
+  # The map function applies the normalize function to each element in the train and test datasets
+  train_dataset =  train_dataset.map(normalize)
+  test_dataset  =  test_dataset.map(normalize)
+  
+  NUM_EXAMPLES = 60000
+  BATCH_SIZE = 32
+  train_dataset = train_dataset.repeat().shuffle(NUM_EXAMPLES).batch(BATCH_SIZE)
+  test_dataset = test_dataset.batch(BATCH_SIZE)
+  
+  model.fit(train_dataset, epochs=5, steps_per_epoch=math.ceil(num_train_examples/BATCH_SIZE))
+  
+  test_loss, test_accuracy = model.evaluate(test_dataset, steps=math.ceil(num_train_examples/BATCH_SIZE))
+  ```
